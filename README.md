@@ -1,24 +1,86 @@
-# Practice time!
+# MovieLens Recommender System with PySpark
 
-Now let's apply this to real world use-case!
+This project is a movie recommendation system built with PySpark, using the MovieLens dataset and the Alternating Least Squares (ALS) collaborative filtering algorithm. It features a web interface with Streamlit.
 
-Read streaming data from any of [those APIs](https://github.com/ColinEberhardt/awesome-public-streaming-datasets).
+## Features
+- Download and prepare the MovieLens dataset automatically
+- Train a collaborative filtering model (ALS) with PySpark
+- Generate movie recommendations for users
+- User-friendly web interface with Streamlit
+- Containerized with Docker for easy deployment
 
-You can also choose any data streaming system to practice, make sure to pick a subject that interest you! That's the best way to learn. ;)
+## Requirements
 
-**Make sure to choose a `Streaming API` and NOT a `REST API`.**
+Install dependencies with:
+```bash
+pip install -r requirements.txt
+```
 
-Streaming API are also called `web socket APIs`.
+**requirements.txt:**
+- pyspark
+- pandas
+- streamlit
 
-## What do I do with those data?
+## Usage
 
-It doesn't matter, the goal for now is to be able to:
+1. **Download the MovieLens data:**
+	```bash
+	python download_movielens.py
+	```
 
-- Connect to a data streaming feed with PySpark.
-- Analyse and transform data with PySpark.
-- Push your code to a Github repo.
+2. **Train the ALS recommender and save the model:**
+	```bash
+	python pyspark_als_recommender.py
+	```
 
-![spark illustration](https://blog.stratio.com/wp-content/uploads/2017/10/Optimizing-Spark.png)
+3. **Launch the Streamlit web app:**
+	```bash
+	streamlit run streamlit_app.py
+	```
+	Then open [http://localhost:8501](http://localhost:8501) in your browser.
 
 
-We started by creating a Docker image to containerize the environment. The first API we tried wasn't working so we switched to another one, blockchain.info.
+## Docker Usage
+
+You can run the entire project in a Docker container for a fully isolated environment (no need for a local Python/Java install).
+
+### Build the Docker image
+```bash
+docker build -t pyspark-challenge .
+```
+
+### Run the container (production mode)
+```bash
+docker run -p 8501:8501 pyspark-challenge
+```
+
+### Development mode: live code updates
+To develop and test your code without rebuilding the image at every change, mount your project directory as a volume:
+```bash
+docker run -p 8501:8501 -v $(pwd):/app pyspark-challenge
+```
+This way, any code change on your machine is instantly reflected in the running container.
+
+> **Note:** If you add or change dependencies in `requirements.txt`, you must rebuild the image.
+
+## Project Structure
+
+- `download_movielens.py` — Download and extract the MovieLens dataset
+- `pyspark_als_recommender.py` — Train and evaluate the ALS model, save it for later use
+- `streamlit_app.py` — Streamlit web app for user recommendations
+- `requirements.txt` — Python dependencies
+- `Dockerfile` — Containerization for deployment
+
+## Data
+
+The project uses the [MovieLens ml-latest-small](https://grouplens.org/datasets/movielens/) dataset (included via script).
+
+## How it works
+
+1. The dataset is downloaded and extracted.
+2. The ALS model is trained on user ratings and saved.
+3. The Streamlit app loads the model and allows users to get movie recommendations by entering their user ID.
+
+## License
+
+This project is for educational purposes.

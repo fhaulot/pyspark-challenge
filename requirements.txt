@@ -1,2 +1,3 @@
-pyspark==4.0.1
-websocket-client
+pyspark
+pandas
+streamlit
